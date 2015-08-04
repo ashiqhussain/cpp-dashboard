@@ -1,0 +1,100 @@
+﻿@model CppDashboard.Models.Log
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="customerPaymentsDashboard">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script type="text/javascript">
+        window.loadUrl = "@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "DashboardData", action = "Get" })";
+        window.updateUrl = "@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "DashboardData", action = "Update" })";
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+    <script src="~/Scripts/loadStatus.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <title>Customer Payments::Dashboard</title>
+</head>
+<body>
+
+    <div ng-controller="statusController" class="container">
+        <div class="alert alert-info" role="alert">
+            <strong>For the last 2 hours only!! [auto-refresh]</strong> 
+        </div>
+        <p>
+            <h3>
+                <label ng-class="isOffline ? 'label label-success' : 'label label-warning'">{{systemMessage}}</label>
+                <label style="float: right" class="label label-default">{{current | date: "mediumTime"}}</label>
+            </h3>
+        </p>
+        <div class="row">
+
+            <div class="col-sm-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span style="font-weight: bold">Payments</span>|<span style="font-style: italic;">declines</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4><label class="label label-success">{{paymentInfo.success}}</label>|<label class="label label-warning">{{paymentInfo.declines}}</label></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span style="font-weight: bold">Cancelled</span><span style="font-style: italic;">(orphan)</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4><label class="label label-warning">{{paymentInfo.cancellations}}</label></h4>
+                    </div>
+                </div>
+               
+            </div>
+            @*<div class="col-sm-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span style="font-weight: bold">Refuse</span><span style="font-style: italic;">(gate/ady)</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <span>
+                            MakePayment
+                            <label class="label label-warning">WIP1</label>|<label class="label label-warning">WIP2</label>
+                        </span>
+                    </div>
+                </div>
+            </div>*@
+            <div class="col-sm-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span style="font-weight: bold">PspComms</span><span style="font-style: italic;">(faliure)</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4><label class="label label-warning">{{paymentInfo.commsFaiures}}</label></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table table-condensed">
+            <tr ng-repeat="x in logs">
+                <td>{{ x.Id }}</td>
+                <td>{{ x.Date | date: "shortTime" }}</td>
+                <td>{{ x.Message }}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
