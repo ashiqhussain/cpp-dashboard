@@ -10,7 +10,14 @@ namespace CppDashboard.Logic.Refusals
         /// Returns the number of refusals at the Gateway level. No payment record is created at this level
         /// as it is a validation error.
         /// </summary>
-        int GetTotal();
+        RefuseSummary GetTotal();
+    }
+
+    public class RefuseSummary
+    {
+        public int ServiceLevelRefusals { get; set; }
+
+        public int AdyenRefusals { get; set; }
     }
 
     public class GatewayRefusals : IGatewayRefusals
@@ -27,23 +34,31 @@ namespace CppDashboard.Logic.Refusals
             "Saved Card not found",
             "Invalid Name on card",
             "Invalid billing address",
-            "Invalid payer authentication request"
+            "Invalid payer authentication request",
+        };
+
+        private static readonly List<string> AdyenRefusalPrefix = new List<string>()
+        {
+            "Refused [1000]"
         };
 
         /// <summary>
         /// Returns the number of refusals at the Gateway level. No payment record is created at this level
         /// as it is a validation error.
         /// </summary>
-        public int GetTotal()
+        public RefuseSummary GetTotal()
         {
             // Validation errors are logged in the logging database.
 
             var logs = DataLoader.Instance.Logs;
 
-            var gateway = logs.Count(h => h.Level.Equals("ERROR", StringComparison.InvariantCultureIgnoreCase)
+            var gateway = logs.Count(h => h.Level.Equals("INFO", StringComparison.InvariantCultureIgnoreCase)
                             && h.Logger.Equals(MakePayment) && CardValidationPrefix.Any(j => h.Message.StartsWith(j)));
 
-            return gateway;
+            var adyen = logs.Count(h => h.Level.Equals("INFO", StringComparison.InvariantCultureIgnoreCase)
+                            && h.Logger.Equals(MakePayment) && AdyenRefusalPrefix.Any(j => h.Message.StartsWith(j)));
+
+            return new RefuseSummary() { AdyenRefusals = adyen, ServiceLevelRefusals = gateway };
         }
     }
 }

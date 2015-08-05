@@ -21,13 +21,15 @@ namespace CppDashboard.Models
 
         public PageModel Build()
         {
+            var refusals = _gatewayRefusals.GetTotal();
             var pageModel = new PageModel()
             {
                 CancellationsDueToGhosts = _cancellationsDueToOrphan.GetTotal(),
                 CommsFaliures = _communicationFailures.GetTotal(),
                 SuccessPayments = _paymentsCalculator.GetTotalSuccessfulPayments(),
                 DeclinedPayments = _paymentsCalculator.GetTotalDeclinedPayments(),
-                GatewayMkFaliures = _gatewayRefusals.GetTotal()
+                GatewayMkFaliures = refusals.ServiceLevelRefusals,
+                AdyenMkFaliures = refusals.AdyenRefusals
             };
 
             return pageModel;

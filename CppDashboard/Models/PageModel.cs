@@ -28,5 +28,7 @@ namespace CppDashboard.Models
         public int CommsFaliures { get; set; }
 
         public int GatewayMkFaliures { get; set; }
+
+        public int AdyenMkFaliures { get; set; }
     }
 }

@@ -15,11 +15,13 @@ angular.module("customerPaymentsDashboard", [])
                     $scope.paymentInfo.declines = data.DeclinedPayments;
                     $scope.paymentInfo.cancellations = data.CancellationsDueToGhosts;
                     $scope.paymentInfo.commsFaiures = data.CommsFaliures;
+                    $scope.paymentInfo.mkGatewayFailures = data.GatewayMkFaliures;
+                    $scope.paymentInfo.mkAdyenFailures = data.AdyenMkFaliures;
                 });
 
                
             };
-            doPageFunc();
+            doPageFunc(); 
 
             $interval(function() {
                 $http.get(window.updateUrl);

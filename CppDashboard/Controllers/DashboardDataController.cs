@@ -29,7 +29,8 @@ namespace CppDashboard.Controllers
                 DeclinedPayments = model.DeclinedPayments,
                 CancellationsDueToGhosts = model.CancellationsDueToGhosts,
                 CommsFaliures = model.CommsFaliures,
-                GatewayMkFaliures = model.GatewayMkFaliures
+                GatewayMkFaliures = model.GatewayMkFaliures,
+                AdyenMkFaliures = model.AdyenMkFaliures
             };
             return data;
         }
