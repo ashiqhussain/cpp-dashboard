@@ -11,7 +11,8 @@ namespace CppDashboard.Models
         private readonly IGatewayRefusals _gatewayRefusals;
 
         public PageModelBuilder(ICancellationsDueToOrphan cancellationsDueToOrphan, 
-            IPspCommunicationFailures communicationFailures, IPaymentsCalculator paymentsCalculator, IGatewayRefusals gatewayRefusals)
+            IPspCommunicationFailures communicationFailures, IPaymentsCalculator paymentsCalculator, 
+            IGatewayRefusals gatewayRefusals)
         {
             _cancellationsDueToOrphan = cancellationsDueToOrphan;
             _communicationFailures = communicationFailures;

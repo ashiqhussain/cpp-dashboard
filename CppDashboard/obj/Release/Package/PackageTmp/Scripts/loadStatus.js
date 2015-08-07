@@ -1,7 +1,15 @@
 angular.module("customerPaymentsDashboard", [])
         .controller("statusController", function ($scope, $http, $interval) {
 
-            var doPageFunc = function() {
+            var systemLoad = function () {
+                var system = $http.get(window.loadSystemUri);
+                system.success(function (data) {
+                    $scope.systemData = {};
+                    $scope.systemData.errorSummary = data;
+                });
+            };
+
+            var doPageFunc = function () {
                 var offlineStatus = $http.get(window.loadUrl);
 
                 offlineStatus.success(function (data, status, headers, config) {
@@ -19,11 +27,16 @@ angular.module("customerPaymentsDashboard", [])
                     $scope.paymentInfo.mkAdyenFailures = data.AdyenMkFaliures;
                 });
 
-               
-            };
-            doPageFunc(); 
 
-            $interval(function() {
+            };
+            doPageFunc();
+            systemLoad();
+            
+            $interval(function () {
+                systemLoad();
+            }, 10000 * 6); // every min.
+
+            $interval(function () {
                 $http.get(window.updateUrl);
                 doPageFunc();
             }, 10000); // every 10s.

@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width" />
     <script type="text/javascript">
         window.loadUrl = "@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "DashboardData", action = "Get" })";
+        window.loadSystemUri = "@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "SystemData", action = "GetSystemErrors" })";
         window.updateUrl = "@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "DashboardData", action = "Update" })";
     </script>
 
@@ -30,15 +31,41 @@
 <body>
 
     <div ng-controller="statusController" class="container">
-        <div class="alert alert-info" role="alert">
-            <strong>For the last 2 hours only!! [auto-refresh]</strong>
-        </div>
         <p>
             <h3>
                 <label ng-class="isOffline ? 'label label-success' : 'label label-warning'">{{systemMessage}}</label>
                 <label style="float: right" class="label label-default">{{current | date: "mediumTime"}}</label>
             </h3>
         </p>
+        <div class="alert alert-success" role="alert">
+            <p><strong>System Status | </strong><span style="font-style: italic">Last 24 hours - refresh every minute</span></p>
+        </div>
+        <div class="row">
+            <div class="col-lg-push-5">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span style="font-weight: bold">System</span>|<span style="font-style: italic;">exceptions</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-condensed">
+                            <tr>
+                                <th>Service</th>
+                                <th>Error count</th>
+                                <th>Last Error</th>
+                            </tr>
+                            <tr ng-repeat="x in systemData.errorSummary">
+                                <td>{{ x.Service }}</td>
+                                <td>{{ x.ErrorCount }}</td>
+                                <td nowrap="nowrap">{{ x.LastError | limitTo: 100}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-info" role="alert">
+            <p><strong>System Status | </strong><span style="font-style: italic">Last 2 hours - refresh every 10 seconds</span></p>
+        </div>
         <div class="row">
 
             <div class="col-sm-2">

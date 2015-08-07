@@ -1,5 +1,6 @@
 using System.Web.Http;
 using System.Web.Http.Dependencies;
+using CppDashboard.DataProvider;
 using CppDashboard.Logic;
 using CppDashboard.Logic.Refusals;
 using CppDashboard.Models;
@@ -19,20 +20,20 @@ namespace CppDashboard.App_Start
     using Ninject;
     using Ninject.Web.Common;
 
-    public static class NinjectWebCommon 
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -40,7 +41,7 @@ namespace CppDashboard.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -76,60 +77,63 @@ namespace CppDashboard.App_Start
             kernel.Bind<IPspCommunicationFailures>().To<PspCommunicationFailures>();
             kernel.Bind<IPaymentsCalculator>().To<PaymentsCalculator>();
             kernel.Bind<IGatewayRefusals>().To<GatewayRefusals>();
-        }        
+            kernel.Bind<DataLoadBase<ErrorSummary>>().To<ErrorSummaryWindow>().InRequestScope();
+            kernel.Bind<IInitialiser>().To<Initialiser>().InRequestScope();
+        }
     }
 
-      // Provides a Ninject implementation of IDependencyScope
-   // which resolves services using the Ninject container.
-   public class NinjectDependencyScope : IDependencyScope
-   {
-      IResolutionRoot resolver;
+    // Provides a Ninject implementation of IDependencyScope
+    // which resolves services using the Ninject container.
+    public class NinjectDependencyScope : IDependencyScope
+    {
+        IResolutionRoot resolver;
 
-      public NinjectDependencyScope(IResolutionRoot resolver)
-      {
-         this.resolver = resolver;
-      }
+        public NinjectDependencyScope(IResolutionRoot resolver)
+        {
+            this.resolver = resolver;
+        }
 
-      public object GetService(Type serviceType)
-      {
-         if (resolver == null)
-            throw new ObjectDisposedException("this", "This scope has been disposed");
+        public object GetService(Type serviceType)
+        {
+            if (resolver == null)
+                throw new ObjectDisposedException("this", "This scope has been disposed");
 
-         return resolver.TryGet(serviceType);
-      }
+            return resolver.TryGet(serviceType);
+        }
 
-      public System.Collections.Generic.IEnumerable<object> GetServices(Type serviceType)
-      {
-         if (resolver == null)
-            throw new ObjectDisposedException("this", "This scope has been disposed");
+        public System.Collections.Generic.IEnumerable<object> GetServices(Type serviceType)
+        {
+            if (resolver == null)
+                throw new ObjectDisposedException("this", "This scope has been disposed");
 
-         return resolver.GetAll(serviceType);
-      }
+            return resolver.GetAll(serviceType);
+        }
 
-      public void Dispose()
-      {
-         IDisposable disposable = resolver as IDisposable;
-         if (disposable != null)
-            disposable.Dispose();
+        public void Dispose()
+        {
+            IDisposable disposable = resolver as IDisposable;
+            if (disposable != null)
+                disposable.Dispose();
 
-         resolver = null;
-      }
-   }
+            resolver = null;
+        }
+    }
 
-   // This class is the resolver, but it is also the global scope
-   // so we derive from NinjectScope.
-   public class NinjectDependencyResolver : NinjectDependencyScope, IDependencyResolver
-   {
-      IKernel kernel;
+    // This class is the resolver, but it is also the global scope
+    // so we derive from NinjectScope.
+    public class NinjectDependencyResolver : NinjectDependencyScope, IDependencyResolver
+    {
+        IKernel kernel;
 
-      public NinjectDependencyResolver(IKernel kernel) : base(kernel)
-      {
-         this.kernel = kernel;
-      }
+        public NinjectDependencyResolver(IKernel kernel)
+            : base(kernel)
+        {
+            this.kernel = kernel;
+        }
 
-      public IDependencyScope BeginScope()
-      {
-         return new NinjectDependencyScope(kernel.BeginBlock());
-      }
-   }
+        public IDependencyScope BeginScope()
+        {
+            return new NinjectDependencyScope(kernel.BeginBlock());
+        }
+    }
 }

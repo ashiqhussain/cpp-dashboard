@@ -160,3 +160,4 @@ D:\Sandbox\CppDashboardGH\CppDashboard\bin\zh-Hant\System.Spatial.resources.dll
 D:\Sandbox\CppDashboardGH\CppDashboard\obj\Release\CppDashboard.csprojResolveAssemblyReference.cache
 D:\Sandbox\CppDashboardGH\CppDashboard\obj\Release\CppDashboard.dll
 D:\Sandbox\CppDashboardGH\CppDashboard\obj\Release\CppDashboard.pdb
+D:\Sandbox\CppDashboardGH\CppDashboard\bin\DataProvider\sql\SystemErrorSummary.sql

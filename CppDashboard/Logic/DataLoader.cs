@@ -100,12 +100,16 @@ namespace CppDashboard.Logic
             }
         }
 
+        public void LoadSystemData()
+        {
+            
+        }
+
         public void Reload()
         {
             new LoggingDataFacade().ReloadFrom(_logs.Max(m => m.Id), ref _logs);
             new PaymentsDataFacade().ReloadFrom(_payments.Max(m => m.PaymentId), ref _payments);
             new PaymentEventsDataFacade().ReloadFrom(_paymentEvents.Max(m => m.PaymentEventsId), ref _paymentEvents);
-
         }
 
         private void LoadDataForGivenDuration()

@@ -179,7 +179,9 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DashboardDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SystemDataController.cs" />
     <Compile Include="DataProvider\DataLoadBase.cs" />
+    <Compile Include="DataProvider\ErrorSummaryWindow.cs" />
     <Compile Include="DataProvider\ILoad.cs" />
     <Compile Include="DataProvider\OfflineDataFacade.cs" />
     <Compile Include="DataProvider\PaymentsDataFacade.cs" />
@@ -203,12 +205,15 @@
     <Compile Include="Logic\ThroughputCalculator.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\ErrorSummary.cs" />
+    <Compile Include="Models\Initialiser.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\PageModelBuilder.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentEvent.cs" />
+    <Compile Include="Models\SystemModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +277,9 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="DataProvider\sql\SystemErrorSummary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
