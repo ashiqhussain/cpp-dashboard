@@ -5,6 +5,7 @@ using CppDashboard.DataProvider;
 using CppDashboard.Initialisers;
 using CppDashboard.Logic;
 using CppDashboard.Logic.General;
+using CppDashboard.Logic.Offline;
 using CppDashboard.Logic.Orphans;
 using CppDashboard.Logic.Payments;
 using CppDashboard.Logic.Refusals;
@@ -83,6 +84,8 @@ namespace CppDashboard.App_Start
             kernel.Bind<IPspCommunicationFailures>().To<PspCommunicationFailures>();
             kernel.Bind<IPaymentsCalculator>().To<PaymentsCalculator>();
             kernel.Bind<IGatewayRefusals>().To<GatewayRefusals>();
+            kernel.Bind<SystemOnlineOrOfflineStatus>().ToSelf();
+            
             
             kernel.Bind<DataCanLoadBase<ErrorSummary>, IErrorSummaryWindow>().To<ErrorSummaryWindow>().InRequestScope();
 

@@ -27,9 +27,6 @@ namespace CppDashboard
             var formatters = GlobalConfiguration.Configuration.Formatters;
 
             formatters.Remove(formatters.XmlFormatter);
-
-            // Load data
-            DataLoader.Instance.Load();
         }
     }
 }

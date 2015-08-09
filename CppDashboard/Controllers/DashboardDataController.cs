@@ -29,19 +29,8 @@ namespace CppDashboard.Controllers
         public PageModel Get()
         {
             var model = _pageModelBuilder.Build();
-            var data = new PageModel()
-            {
-                IsSystemOnline = DataLoader.Instance.IsSystemOnline,
-                Logs = model.Logs.OrderByDescending(d => d.Date),
-                Current = DateTime.Now,
-                SuccessPayments = model.SuccessPayments,
-                DeclinedPayments = model.DeclinedPayments,
-                CancellationsDueToGhosts = model.CancellationsDueToGhosts,
-                CommsFaliures = model.CommsFaliures,
-                GatewayMkFaliures = model.GatewayMkFaliures,
-                AdyenMkFaliures = model.AdyenMkFaliures
-            };
-            return data;
+            
+            return model;
         }
 
         [HttpGet]

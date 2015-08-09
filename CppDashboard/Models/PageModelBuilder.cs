@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CppDashboard.DataProvider;
 using CppDashboard.Logic;
 using CppDashboard.Logic.General;
+using CppDashboard.Logic.Offline;
 using CppDashboard.Logic.Orphans;
 using CppDashboard.Logic.Payments;
 using CppDashboard.Logic.Refusals;
@@ -15,16 +17,18 @@ namespace CppDashboard.Models
         private readonly IPaymentsCalculator _paymentsCalculator;
         private readonly IGatewayRefusals _gatewayRefusals;
         private readonly ILoggingInfo _loggingInfo;
+        private readonly SystemOnlineOrOfflineStatus _systemOnlineOrOfflineStatus;
 
         public PageModelBuilder(ICancellationsDueToOrphan cancellationsDueToOrphan, 
             IPspCommunicationFailures communicationFailures, IPaymentsCalculator paymentsCalculator, 
-            IGatewayRefusals gatewayRefusals, ILoggingInfo loggingInfo)
+            IGatewayRefusals gatewayRefusals, ILoggingInfo loggingInfo, SystemOnlineOrOfflineStatus systemOnlineOrOfflineStatus)
         {
             _cancellationsDueToOrphan = cancellationsDueToOrphan;
             _communicationFailures = communicationFailures;
             _paymentsCalculator = paymentsCalculator;
             _gatewayRefusals = gatewayRefusals;
             _loggingInfo = loggingInfo;
+            _systemOnlineOrOfflineStatus = systemOnlineOrOfflineStatus;
         }
 
         public PageModel Build()
@@ -32,13 +36,15 @@ namespace CppDashboard.Models
             var refusals = _gatewayRefusals.GetTotal();
             var pageModel = new PageModel()
             {
+                IsSystemOnline = _systemOnlineOrOfflineStatus.IsSystemOnline(),
                 CancellationsDueToGhosts = _cancellationsDueToOrphan.GetTotal(),
                 CommsFaliures = _communicationFailures.GetTotal(),
                 SuccessPayments = _paymentsCalculator.GetTotalSuccessfulPayments(),
                 DeclinedPayments = _paymentsCalculator.GetTotalDeclinedPayments(),
                 GatewayMkFaliures = refusals.ServiceLevelRefusals,
                 AdyenMkFaliures = refusals.AdyenRefusals,
-                Logs = _loggingInfo.Logs.Take(100)
+                Logs = _loggingInfo.Logs.Take(100).OrderByDescending(d => d.Date),
+                Current = DateTime.Now,
             };
 
             return pageModel;

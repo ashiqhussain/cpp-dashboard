@@ -203,8 +203,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Initialisers\SystemDataInitialiser.cs" />
+    <Compile Include="Logic\Offline\SystemOnlineOrOfflineStatus.cs" />
     <Compile Include="Logic\Orphans\CancellationsDueToOrphan.cs" />
-    <Compile Include="Logic\DataLoader.cs" />
     <Compile Include="Logic\Payments\PaymentsCalculator.cs" />
     <Compile Include="Logic\General\PspCommunicationFailures.cs" />
     <Compile Include="Logic\Refusals\GatewayRefusals.cs" />
