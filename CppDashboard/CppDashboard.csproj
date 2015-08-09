@@ -202,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Initialisers\SystemDataInitialiser.cs" />
     <Compile Include="Logic\Orphans\CancellationsDueToOrphan.cs" />
     <Compile Include="Logic\DataLoader.cs" />
     <Compile Include="Logic\Payments\PaymentsCalculator.cs" />
@@ -213,7 +214,7 @@
     <Compile Include="Models\OfflineConfig.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\ErrorSummary.cs" />
-    <Compile Include="Models\ShortTermDataInitialiser.cs" />
+    <Compile Include="Initialisers\ShortTermDataInitialiser.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PageModel.cs" />

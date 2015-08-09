@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using CppDashboard.DataProvider;
 using CppDashboard.Logic;
+using CppDashboard.Logic.General;
+using CppDashboard.Logic.Orphans;
+using CppDashboard.Logic.Payments;
 using CppDashboard.Logic.Refusals;
 
 namespace CppDashboard.Models

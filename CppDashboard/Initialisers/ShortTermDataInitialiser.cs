@@ -1,6 +1,7 @@
 ﻿using CppDashboard.DataProvider;
+using CppDashboard.Models;
 
-namespace CppDashboard.Models
+namespace CppDashboard.Initialisers
 {
     public interface IInitialiser
     {
@@ -33,21 +34,6 @@ namespace CppDashboard.Models
             _paymentEventsAll.Load();
             _paymentAll.Load();
             _loaded = true;
-        }
-    }
-
-    public class SystemDataInitialiser : IInitialiser
-    {
-        private readonly DataCanLoadBase<ErrorSummary> _errorSummary;
-
-        public SystemDataInitialiser(DataCanLoadBase<ErrorSummary> errorSummary)
-        {
-            _errorSummary = errorSummary;
-        }
-
-        public void Load()
-        {
-            _errorSummary.Load();
         }
     }
 }

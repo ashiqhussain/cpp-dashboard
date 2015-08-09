@@ -54,11 +54,12 @@
                                 <th>Last Error</th>
                             </tr>
                             <tr ng-repeat="x in systemData.errorSummary">
-                                <td>{{ x.Service }}</td>
-                                <td>{{ x.ErrorCount }}</td>
-                                <td nowrap="nowrap">{{ x.LastError | limitTo: 100}}</td>
+                                <td ng-if="x.ErrorCount > 0">{{ x.Service }}</td>
+                                <td ng-if="x.ErrorCount > 0">{{ x.ErrorCount }}</td>
+                                <td ng-if="x.ErrorCount > 0" nowrap="nowrap">{{ x.LastError | limitTo: 100}}</td>
                             </tr>
                         </table>
+                        <div ng-if="systemData.noErrors != ''"><span style="font-style: italic; font-size: 0.9em;">No exceptions in {{systemData.noErrors}}</span></div>
                     </div>
                 </div>
             </div>
@@ -92,13 +93,13 @@
             <div class="col-sm-3">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><span style="font-weight: bold">Refused</span><span style="font-style: italic;">(gateway/adyen)</span></h3>
+                        <h3 class="panel-title"><span style="font-weight: bold">Refused</span><span style="font-style: italic;">(at gateway)</span></h3>
                     </div>
                     <div class="panel-body">
                         <h4>
                             <span>
                                 MakePayment
-                                <label class="label label-warning">{{paymentInfo.mkGatewayFailures}}</label>|<label class="label label-warning">{{paymentInfo.mkAdyenFailures}}</label>
+                                <label class="label label-warning">{{paymentInfo.mkGatewayFailures}}</label>
                             </span>
                         </h4>
                     </div>

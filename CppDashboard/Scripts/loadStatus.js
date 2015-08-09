@@ -6,6 +6,12 @@ angular.module("customerPaymentsDashboard", [])
                 system.success(function (data) {
                     $scope.systemData = {};
                     $scope.systemData.errorSummary = data;
+                    $scope.systemData.noErrors = '';
+                    for (var s in data) {
+                        if (data[s].ErrorCount == 0) {
+                            $scope.systemData.noErrors += data[s].Service + ', ';
+                        }
+                    }
                 });
             };
 

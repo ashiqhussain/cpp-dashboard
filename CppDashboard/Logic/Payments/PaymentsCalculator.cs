@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using CppDashboard.DataProvider;
 
-namespace CppDashboard.Logic
+namespace CppDashboard.Logic.Payments
 {
     public interface IPaymentsCalculator
     {
