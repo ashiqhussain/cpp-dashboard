@@ -1,9 +1,11 @@
 using System.Web.Http;
 using System.Web.Http.Dependencies;
+using CppDashboard.Controllers;
 using CppDashboard.DataProvider;
 using CppDashboard.Logic;
 using CppDashboard.Logic.Refusals;
 using CppDashboard.Models;
+using Ninject.Parameters;
 using Ninject.Syntax;
 using Ninject.Web.Mvc;
 
@@ -77,8 +79,26 @@ namespace CppDashboard.App_Start
             kernel.Bind<IPspCommunicationFailures>().To<PspCommunicationFailures>();
             kernel.Bind<IPaymentsCalculator>().To<PaymentsCalculator>();
             kernel.Bind<IGatewayRefusals>().To<GatewayRefusals>();
-            kernel.Bind<DataLoadBase<ErrorSummary>>().To<ErrorSummaryWindow>().InRequestScope();
-            kernel.Bind<IInitialiser>().To<Initialiser>().InRequestScope();
+            
+            kernel.Bind<DataCanLoadBase<ErrorSummary>, IErrorSummaryWindow>().To<ErrorSummaryWindow>().InRequestScope();
+
+            kernel.Bind<DataCanLoadBase<Log>, ILoggingInfo, ICanReload>().To<LoggingDataCanFacade>().InSingletonScope();
+
+            kernel.Bind<DataCanLoadBase<PaymentEvent>, IMonitoringEvents, ICanReload>().To<PaymentEventsDataCanFacade>().InSingletonScope();
+
+            kernel.Bind<DataCanLoadBase<Payment>, IPaymentInfo, ICanReload>().To<PaymentsDataCanFacade>().InSingletonScope();
+
+            kernel.Bind<ICanLoad<OfflineConfig>, IOfflineConfigs, ICanReload>().To<OfflineDataFacade>().InSingletonScope();
+
+            kernel.Bind<IInitialiser>()
+                .To<ShortTermDataInitialiser>()
+                .WhenInjectedInto<DashboardDataController>()
+                .InRequestScope();
+
+            kernel.Bind<IInitialiser>()
+                .To<SystemDataInitialiser>()
+                .WhenInjectedInto<SystemDataController>()
+                .InRequestScope();
         }
     }
 

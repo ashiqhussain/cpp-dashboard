@@ -180,15 +180,20 @@
     <Compile Include="Controllers\DashboardDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SystemDataController.cs" />
-    <Compile Include="DataProvider\DataLoadBase.cs" />
+    <Compile Include="DataProvider\DataCanLoadBase.cs" />
     <Compile Include="DataProvider\ErrorSummaryWindow.cs" />
-    <Compile Include="DataProvider\ILoad.cs" />
+    <Compile Include="DataProvider\IErrorSummaryWindow.cs" />
+    <Compile Include="DataProvider\ICanLoad.cs" />
+    <Compile Include="DataProvider\ILoggingInfo.cs" />
+    <Compile Include="DataProvider\IMonitoringEvents.cs" />
+    <Compile Include="DataProvider\IOfflineConfigs.cs" />
+    <Compile Include="DataProvider\IPaymentInfo.cs" />
     <Compile Include="DataProvider\OfflineDataFacade.cs" />
-    <Compile Include="DataProvider\PaymentsDataFacade.cs" />
+    <Compile Include="DataProvider\PaymentsDataCanFacade.cs" />
     <Compile Include="DataProvider\Setup\ConnectionCreator.cs" />
-    <Compile Include="DataProvider\PaymentEventsDataFacade.cs" />
+    <Compile Include="DataProvider\PaymentEventsDataCanFacade.cs" />
     <Compile Include="DataProvider\NotificationDataFacade.cs" />
-    <Compile Include="DataProvider\LoggingDataFacade.cs" />
+    <Compile Include="DataProvider\LoggingDataCanFacade.cs" />
     <Compile Include="DataProvider\Setup\Scope.cs" />
     <Compile Include="DataProvider\Setup\Impersonator.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -197,23 +202,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logic\CancellationsDueToOrphan.cs" />
+    <Compile Include="Logic\Orphans\CancellationsDueToOrphan.cs" />
     <Compile Include="Logic\DataLoader.cs" />
-    <Compile Include="Logic\PaymentsCalculator.cs" />
-    <Compile Include="Logic\PspCommunicationFailures.cs" />
+    <Compile Include="Logic\Payments\PaymentsCalculator.cs" />
+    <Compile Include="Logic\General\PspCommunicationFailures.cs" />
     <Compile Include="Logic\Refusals\GatewayRefusals.cs" />
+    <Compile Include="Logic\Refusals\IGatewayRefusals.cs" />
+    <Compile Include="Logic\Refusals\RefuseSummary.cs" />
     <Compile Include="Logic\ThroughputCalculator.cs" />
-    <Compile Include="Models\Config.cs" />
+    <Compile Include="Models\OfflineConfig.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\ErrorSummary.cs" />
-    <Compile Include="Models\Initialiser.cs" />
+    <Compile Include="Models\ShortTermDataInitialiser.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\PageModelBuilder.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentEvent.cs" />
-    <Compile Include="Models\SystemModelBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,27 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CppDashboard.DataProvider.Setup;
 using CppDashboard.Models;
 using CppDashboard.Extensions;
 
 namespace CppDashboard.DataProvider
 {
-    public class PaymentsDataFacade : DataLoadBase<Payment>
+    public class PaymentsDataCanFacade : DataCanLoadBase<Payment>, IPaymentInfo, ICanReload
     {
+        public IEnumerable<Payment> Payments
+        {
+            get
+            {
+                return _payments;
+            }
+        }
+
+        private IEnumerable<Payment> _payments; 
         private readonly ConnectionCreator _connectionCreator;
 
-        public PaymentsDataFacade()
+        public PaymentsDataCanFacade()
         {
             _connectionCreator = new ConnectionCreator(Scope.CustomerPayment);
         }
 
-        public override IEnumerable<Payment> Load(int duration)
+        public override void Load()
         {
             var sql = string.Format("SELECT  * FROM Payment WITH (NOLOCK) " +
                       "WHERE CreationDateTime BETWEEN '{0}' AND '{1}' " +
-                                    "ORDER BY CreationDateTime", DateTime.Now.FormattedMins(-duration), DateTime.Now.Formatted());
+                                    "ORDER BY CreationDateTime", DateTime.Now.FormattedMins(-Constants.TimeoutDuration), DateTime.Now.Formatted());
 
-            return _connectionCreator.Exec<Payment>(sql);
+            _payments = _connectionCreator.Exec<Payment>(sql);
         }
 
         protected override bool AllowedPeriod(Payment input)
@@ -29,14 +39,22 @@ namespace CppDashboard.DataProvider
             return input.CreationDateTime >= DateTime.Now.StartMins(Constants.TimeoutDuration) && input.CreationDateTime <= DateTime.Now;
         }
 
-        protected override IEnumerable<Payment> LoadingFrom(int primaryKey)
+        protected override IEnumerable<Payment> LoadingFrom()
         {
+            var maxPrimary = _payments.Max(m => m.PaymentId);
+
             var sql = string.Format("SELECT  * FROM Payment WITH (NOLOCK) " +
-                    "WHERE PaymentId > '{0}' ", primaryKey);
+                    "WHERE PaymentId > '{0}' ", maxPrimary);
 
             var data = _connectionCreator.Exec<Payment>(sql);
 
             return data;
+        }
+
+        public void Reload()
+        {
+            IList<Payment> pays = _payments.ToList();
+            Refresh(ref pays);
         }
     }
 }

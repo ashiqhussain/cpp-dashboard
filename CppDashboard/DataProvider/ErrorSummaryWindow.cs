@@ -7,7 +7,7 @@ using CppDashboard.Models;
 
 namespace CppDashboard.DataProvider
 {
-    public class ErrorSummaryWindow : DataLoadBase<ErrorSummary>
+    public class ErrorSummaryWindow : DataCanLoadBase<ErrorSummary>, IErrorSummaryWindow
     {
         public IEnumerable<ErrorSummary> ErrorSummaries
         {
@@ -27,10 +27,9 @@ namespace CppDashboard.DataProvider
             _connectionCreator = new ConnectionCreator(Scope.Monitoring);
         }
 
-        public override IEnumerable<ErrorSummary> Load(int duration)
+        public override void Load()
         {
             _summary = _connectionCreator.Exec<ErrorSummary>(_sql);
-            return _summary;
         }
 
         protected override bool AllowedPeriod(ErrorSummary input)
@@ -38,7 +37,7 @@ namespace CppDashboard.DataProvider
             return true;
         }
 
-        protected override IEnumerable<ErrorSummary> LoadingFrom(int primaryKey)
+        protected override IEnumerable<ErrorSummary> LoadingFrom()
         {
             return _connectionCreator.Exec<ErrorSummary>(_sql);
         }

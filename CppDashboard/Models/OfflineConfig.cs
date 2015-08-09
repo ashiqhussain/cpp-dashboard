@@ -2,7 +2,7 @@
 
 namespace CppDashboard.Models
 {
-    public class Config
+    public class OfflineConfig
     {
         public int ConfigurationId { get; set; }
 

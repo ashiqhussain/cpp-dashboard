@@ -1,27 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CppDashboard.DataProvider;
 
 namespace CppDashboard.Logic.Refusals
 {
-    public interface IGatewayRefusals
-    {
-        /// <summary>
-        /// Returns the number of refusals at the Gateway level. No payment record is created at this level
-        /// as it is a validation error.
-        /// </summary>
-        RefuseSummary GetTotal();
-    }
-
-    public class RefuseSummary
-    {
-        public int ServiceLevelRefusals { get; set; }
-
-        public int AdyenRefusals { get; set; }
-    }
-
     public class GatewayRefusals : IGatewayRefusals
     {
+        private readonly ILoggingInfo _loggingInfo;
         private static string MakePayment = "easyJet.CustomerPayments.Gateway.Commands.MakePayment.MakeCardPaymentCommand";
         private static readonly List<string> CardValidationPrefix = new List<string>()
         {
@@ -42,6 +28,11 @@ namespace CppDashboard.Logic.Refusals
             "Refused [1000]"
         };
 
+        public GatewayRefusals(ILoggingInfo loggingInfo)
+        {
+            _loggingInfo = loggingInfo;
+        }
+
         /// <summary>
         /// Returns the number of refusals at the Gateway level. No payment record is created at this level
         /// as it is a validation error.
@@ -50,7 +41,7 @@ namespace CppDashboard.Logic.Refusals
         {
             // Validation errors are logged in the logging database.
 
-            var logs = DataLoader.Instance.Logs;
+            var logs = _loggingInfo.Logs;
 
             var gateway = logs.Count(h => h.Level.Equals("INFO", StringComparison.InvariantCultureIgnoreCase)
                             && h.Logger.Equals(MakePayment) && CardValidationPrefix.Any(j => h.Message.StartsWith(j)));

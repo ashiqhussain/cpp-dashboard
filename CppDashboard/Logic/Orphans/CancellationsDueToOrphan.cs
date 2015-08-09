@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CppDashboard.DataProvider;
 
 namespace CppDashboard.Logic
 {
@@ -12,12 +13,19 @@ namespace CppDashboard.Logic
 
     public class CancellationsDueToOrphan : ICancellationsDueToOrphan
     {
+        private readonly IMonitoringEvents _monitoringEvents;
+
+        public CancellationsDueToOrphan(IMonitoringEvents monitoringEvents)
+        {
+            _monitoringEvents = monitoringEvents;
+        }
+
         /// <summary>
         /// Returns the number of cancellations due to orphan payments.
         /// </summary>
         public int GetTotal()
         {
-            var paymentEvents = DataLoader.Instance.MonitoringEvents;
+            var paymentEvents = _monitoringEvents.PaymentEvents;
 
             // Count all the "OrphanPaymentDetected" events
             var orphanPayments = paymentEvents.Where(o => o.EventType.Equals("OrphanPaymentDetected"));

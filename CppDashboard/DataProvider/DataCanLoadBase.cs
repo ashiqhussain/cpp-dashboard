@@ -5,13 +5,13 @@ using Dapper;
 
 namespace CppDashboard.DataProvider
 {
-    public abstract class DataLoadBase<T> : ILoad<T>
+    public abstract class DataCanLoadBase<T> : ICanLoad<T>
     {
-        public abstract IEnumerable<T> Load(int duration);
-        
-        public void ReloadFrom(int primaryKey, ref IList<T> source)
+        public abstract void Load();
+
+        public void Refresh(ref IList<T> source)
         {
-            var result = LoadingFrom(primaryKey);
+            var result = LoadingFrom();
 
             lock (((ICollection)source).SyncRoot)
             {
@@ -23,6 +23,6 @@ namespace CppDashboard.DataProvider
 
         protected abstract bool AllowedPeriod(T input);
 
-        protected abstract IEnumerable<T> LoadingFrom(int primaryKey);
+        protected abstract IEnumerable<T> LoadingFrom();
     }
 }

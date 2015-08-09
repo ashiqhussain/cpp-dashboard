@@ -1,4 +1,6 @@
-﻿using CppDashboard.Logic;
+﻿using System.Linq;
+using CppDashboard.DataProvider;
+using CppDashboard.Logic;
 using CppDashboard.Logic.Refusals;
 
 namespace CppDashboard.Models
@@ -9,15 +11,17 @@ namespace CppDashboard.Models
         private readonly IPspCommunicationFailures _communicationFailures;
         private readonly IPaymentsCalculator _paymentsCalculator;
         private readonly IGatewayRefusals _gatewayRefusals;
+        private readonly ILoggingInfo _loggingInfo;
 
         public PageModelBuilder(ICancellationsDueToOrphan cancellationsDueToOrphan, 
             IPspCommunicationFailures communicationFailures, IPaymentsCalculator paymentsCalculator, 
-            IGatewayRefusals gatewayRefusals)
+            IGatewayRefusals gatewayRefusals, ILoggingInfo loggingInfo)
         {
             _cancellationsDueToOrphan = cancellationsDueToOrphan;
             _communicationFailures = communicationFailures;
             _paymentsCalculator = paymentsCalculator;
             _gatewayRefusals = gatewayRefusals;
+            _loggingInfo = loggingInfo;
         }
 
         public PageModel Build()
@@ -30,7 +34,8 @@ namespace CppDashboard.Models
                 SuccessPayments = _paymentsCalculator.GetTotalSuccessfulPayments(),
                 DeclinedPayments = _paymentsCalculator.GetTotalDeclinedPayments(),
                 GatewayMkFaliures = refusals.ServiceLevelRefusals,
-                AdyenMkFaliures = refusals.AdyenRefusals
+                AdyenMkFaliures = refusals.AdyenRefusals,
+                Logs = _loggingInfo.Logs.Take(100)
             };
 
             return pageModel;

@@ -1,14 +1,24 @@
 ﻿using System;
 using System.Linq;
+using CppDashboard.DataProvider;
 
 namespace CppDashboard.Logic
 {
     public class ThroughputCalculator
     {
+        private readonly ILoggingInfo _loggingInfo;
+        private readonly IMonitoringEvents _monitoringEvents;
+
+        public ThroughputCalculator(ILoggingInfo loggingInfo, IMonitoringEvents monitoringEvents)
+        {
+            _loggingInfo = loggingInfo;
+            _monitoringEvents = monitoringEvents;
+        }
+
         public decimal CurrentThroughput(int sourceDataInMinutes)
         {
-            var logs = DataLoader.Instance.Logs;
-            var monitoringLogs = DataLoader.Instance.MonitoringEvents;
+            var logs = _loggingInfo.Logs;
+            var monitoringLogs = _monitoringEvents.PaymentEvents;
 
             // Verify card
             var verifyCardCalls = logs.Count(c => c.Message.Contains("VerifyCard:"));

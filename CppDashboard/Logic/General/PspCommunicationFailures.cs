@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CppDashboard.DataProvider;
 
 namespace CppDashboard.Logic
 {
@@ -13,13 +14,20 @@ namespace CppDashboard.Logic
 
     public class PspCommunicationFailures : IPspCommunicationFailures
     {
+        private readonly IMonitoringEvents _monitoringEvents;
+
+        public PspCommunicationFailures(IMonitoringEvents monitoringEvents)
+        {
+            _monitoringEvents = monitoringEvents;
+        }
+
         /// <summary>
         /// Returns the number PspCommunication Failures during the given period.
         /// </summary>
         /// <returns></returns>
         public int GetTotal()
         {
-            var pspComms = DataLoader.Instance.MonitoringEvents;
+            var pspComms = _monitoringEvents.PaymentEvents;
 
             var count = pspComms.Count(c => c.EventType.Equals("PSPCommunicationFailed"));
 

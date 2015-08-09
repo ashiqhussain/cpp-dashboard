@@ -6,8 +6,17 @@ using CppDashboard.Models;
 
 namespace CppDashboard.DataProvider
 {
-    public class OfflineDataFacade : ILoad<Config>
+    public class OfflineDataFacade : ICanLoad<OfflineConfig>, IOfflineConfigs, ICanReload
     {
+        public IEnumerable<OfflineConfig> Configs
+        {
+            get
+            {
+                return _configs;
+            }
+        }
+
+        private IEnumerable<OfflineConfig> _configs; 
         private readonly ConnectionCreator _customerPaymentsConnection;
 
         public OfflineDataFacade()
@@ -15,26 +24,32 @@ namespace CppDashboard.DataProvider
             _customerPaymentsConnection = new ConnectionCreator(Scope.CustomerPayment);
         }
 
-        public IEnumerable<Config> Load(int duration)
+        public void Load()
         {
             var sql = string.Format("SELECT  * FROM Configuration WITH (NOLOCK) " +
                     "WHERE [Key] = '{0}' OR [Key]= '{1}'", "Offline:Status", "Offline:ManualOverrideEnabled");
 
-            return _customerPaymentsConnection.Exec<Config>(sql);
+            _configs = _customerPaymentsConnection.Exec<OfflineConfig>(sql);
         }
 
-        public void ReloadFrom(int primaryKey, ref IList<Config> source)
+        public void Refresh(ref IList<OfflineConfig> source)
         {
             var sql = string.Format("SELECT  * FROM Configuration WITH (NOLOCK) " +
                   "WHERE [Key] = '{0}' OR [Key]= '{1}'", "Offline:Status", "Offline:ManualOverrideEnabled");
 
-            var data = _customerPaymentsConnection.Exec<Config>(sql);
+            var data = _customerPaymentsConnection.Exec<OfflineConfig>(sql);
 
-            lock (((ICollection)source).SyncRoot)
+            lock (((ICollection)_configs).SyncRoot)
             {
-                source.Clear();
-                source.ToList().AddRange(data);
+                _configs.ToList().Clear();
+                _configs.ToList().AddRange(data);
             }
+        }
+
+        public void Reload()
+        {
+            IList<OfflineConfig> configs = _configs.ToList();
+            Refresh(ref configs);
         }
     }
 }

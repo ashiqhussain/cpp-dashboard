@@ -5,16 +5,23 @@ using System.Web.Http;
 using CppDashboard.DataProvider;
 using CppDashboard.Logic;
 using CppDashboard.Models;
+using WebGrease.Css.Extensions;
 
 namespace CppDashboard.Controllers
 {
     public class DashboardDataController : ApiController
     {
         private readonly PageModelBuilder _pageModelBuilder;
+        private readonly IInitialiser _initialiser;
+        private readonly ICanReload[] _reloads;
 
-        public DashboardDataController(PageModelBuilder pageModelBuilder)
+        public DashboardDataController(PageModelBuilder pageModelBuilder, IInitialiser initialiser, ICanReload[] reloads)
         {
+            _initialiser = initialiser;
+            _reloads = reloads;
+            _initialiser.Load();
             _pageModelBuilder = pageModelBuilder;
+            
         }
 
         [HttpGet]
@@ -24,8 +31,7 @@ namespace CppDashboard.Controllers
             var data = new PageModel()
             {
                 IsSystemOnline = DataLoader.Instance.IsSystemOnline,
-                Logs = DataLoader.Instance.Logs.Take(100),
-                Throughput = DataLoader.Instance.CurrentThroughput,
+                Logs = model.Logs.OrderByDescending(d => d.Date),
                 Current = DateTime.Now,
                 SuccessPayments = model.SuccessPayments,
                 DeclinedPayments = model.DeclinedPayments,
@@ -41,7 +47,8 @@ namespace CppDashboard.Controllers
         public void Update()
         {
             // Reload
-            DataLoader.Instance.Reload();
+            //DataLoader.Instance.Reload();
+            _reloads.ForEach(f => f.Reload());
         }
     }
 }
