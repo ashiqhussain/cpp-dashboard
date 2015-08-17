@@ -2,16 +2,23 @@
 
 namespace CppDashboard.DataProvider
 {
-    public interface ICanLoad<T>
+    public interface ICanRefresh<T>
     {
-        void Load();
-
         void Refresh(ref IList<T> source);
-        
     }
 
     public interface ICanReload
     {
         void Reload();
+    }
+
+    public interface ILoadSystemData
+    {
+        void Load();
+    }
+
+    public interface ILoadVolatileData
+    {
+        void Load();
     }
 }

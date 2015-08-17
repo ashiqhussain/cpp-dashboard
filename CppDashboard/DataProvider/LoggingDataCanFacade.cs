@@ -8,7 +8,7 @@ using Ninject.Infrastructure.Language;
 
 namespace CppDashboard.DataProvider
 {
-    public class LoggingDataCanFacade : DataCanLoadBase<Log>, ILoggingInfo, ICanReload
+    public class LoggingDataCanFacade : DataCanRefreshBase<Log>, ILoggingInfo, ICanReload, ILoadVolatileData
     {
         public IEnumerable<Log> Logs
         {
@@ -31,7 +31,7 @@ namespace CppDashboard.DataProvider
         {
             var sql = string.Format("SELECT  * FROM logging.CustomerPayments_log WITH (NOLOCK) " +
                    "WHERE Date BETWEEN '{0}' AND '{1}' " +
-                                 "ORDER BY Date", DateTime.Now.FormattedMins(-Constants.TimeoutDuration), DateTime.Now.Formatted());
+                                 "ORDER BY Date DESC", DateTime.Now.FormattedMins(-Constants.TimeoutDuration), DateTime.Now.Formatted());
 
             _logs = _connectionCreator.Exec<Log>(sql);
         }

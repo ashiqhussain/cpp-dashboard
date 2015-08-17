@@ -7,7 +7,8 @@ using CppDashboard.Extensions;
 
 namespace CppDashboard.DataProvider
 {
-    public class PaymentEventsDataCanFacade : DataCanLoadBase<PaymentEvent>, IMonitoringEvents, ICanReload
+    public class PaymentEventsDataCanFacade : DataCanRefreshBase<PaymentEvent>, 
+        IMonitoringEvents, ICanReload, ILoadVolatileData
     {
         public IEnumerable<PaymentEvent> PaymentEvents
         {

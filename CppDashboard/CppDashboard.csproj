@@ -180,14 +180,15 @@
     <Compile Include="Controllers\DashboardDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SystemDataController.cs" />
-    <Compile Include="DataProvider\DataCanLoadBase.cs" />
+    <Compile Include="DataProvider\DataCanRefreshBase.cs" />
     <Compile Include="DataProvider\ErrorSummaryWindow.cs" />
     <Compile Include="DataProvider\IErrorSummaryWindow.cs" />
-    <Compile Include="DataProvider\ICanLoad.cs" />
+    <Compile Include="DataProvider\ICanRefresh.cs" />
     <Compile Include="DataProvider\ILoggingInfo.cs" />
     <Compile Include="DataProvider\IMonitoringEvents.cs" />
     <Compile Include="DataProvider\IOfflineConfigs.cs" />
     <Compile Include="DataProvider\IPaymentInfo.cs" />
+    <Compile Include="DataProvider\ISystemEventSummaryWindow.cs" />
     <Compile Include="DataProvider\OfflineDataFacade.cs" />
     <Compile Include="DataProvider\PaymentsDataCanFacade.cs" />
     <Compile Include="DataProvider\Setup\ConnectionCreator.cs" />
@@ -202,7 +203,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Initialisers\IInitialiser.cs" />
     <Compile Include="Initialisers\SystemDataInitialiser.cs" />
+    <Compile Include="DataProvider\SystemEventSummaryWindow.cs" />
     <Compile Include="Logic\Offline\SystemOnlineOrOfflineStatus.cs" />
     <Compile Include="Logic\Orphans\CancellationsDueToOrphan.cs" />
     <Compile Include="Logic\Payments\PaymentsCalculator.cs" />
@@ -221,6 +224,7 @@
     <Compile Include="Models\PageModelBuilder.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentEvent.cs" />
+    <Compile Include="Models\SystemEventSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -383,7 +387,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>18141</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:18141/</IISUrl>
+          <IISUrl>http://localhost:19142/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

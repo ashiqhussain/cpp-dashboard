@@ -36,8 +36,6 @@ namespace CppDashboard.Controllers
         [HttpGet]
         public void Update()
         {
-            // Reload
-            //DataLoader.Instance.Reload();
             _reloads.ForEach(f => f.Reload());
         }
     }

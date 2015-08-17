@@ -1,38 +1,22 @@
 ﻿using CppDashboard.DataProvider;
-using CppDashboard.Models;
+using WebGrease.Css.Extensions;
 
 namespace CppDashboard.Initialisers
 {
-    public interface IInitialiser
-    {
-        void Load();
-    }
-
     public class ShortTermDataInitialiser : IInitialiser
     {
-        private bool _loaded;
-        private readonly DataCanLoadBase<Log> _logsBase;
-        private readonly ICanLoad<OfflineConfig> _offlineConfigs;
-        private readonly DataCanLoadBase<PaymentEvent> _paymentEventsAll;
-        private readonly DataCanLoadBase<Payment> _paymentAll;
+        private readonly ILoadVolatileData[] _loadVolatileData;
+        private static bool _loaded;
 
-        public ShortTermDataInitialiser(DataCanLoadBase<Log> logsBase, ICanLoad<OfflineConfig> offlineConfigs, 
-            DataCanLoadBase<PaymentEvent> paymentEventsAll, DataCanLoadBase<Payment> paymentAll)
+        public ShortTermDataInitialiser(ILoadVolatileData[] loadVolatileData)
         {
-            _logsBase = logsBase;
-            _offlineConfigs = offlineConfigs;
-            _paymentEventsAll = paymentEventsAll;
-            _paymentAll = paymentAll;
+            _loadVolatileData = loadVolatileData;
         }
 
         public void Load()
         {
             if (_loaded) return;
-
-            _logsBase.Load();
-            _offlineConfigs.Load();
-            _paymentEventsAll.Load();
-            _paymentAll.Load();
+            _loadVolatileData.ForEach(a => a.Load());
             _loaded = true;
         }
     }

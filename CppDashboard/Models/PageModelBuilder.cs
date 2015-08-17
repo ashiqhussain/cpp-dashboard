@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using CppDashboard.DataProvider;
-using CppDashboard.Logic;
 using CppDashboard.Logic.General;
 using CppDashboard.Logic.Offline;
 using CppDashboard.Logic.Orphans;

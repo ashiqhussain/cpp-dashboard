@@ -6,7 +6,7 @@ using CppDashboard.Models;
 
 namespace CppDashboard.DataProvider
 {
-    public class OfflineDataFacade : ICanLoad<OfflineConfig>, IOfflineConfigs, ICanReload
+    public class OfflineDataFacade : ICanRefresh<OfflineConfig>, IOfflineConfigs, ICanReload, ILoadVolatileData
     {
         public IEnumerable<OfflineConfig> Configs
         {

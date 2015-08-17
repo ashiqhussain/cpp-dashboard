@@ -157,7 +157,7 @@ D:\Sandbox\CppDashboardGH\CppDashboard\bin\ko\System.Spatial.resources.dll
 D:\Sandbox\CppDashboardGH\CppDashboard\bin\ru\System.Spatial.resources.dll
 D:\Sandbox\CppDashboardGH\CppDashboard\bin\zh-Hans\System.Spatial.resources.dll
 D:\Sandbox\CppDashboardGH\CppDashboard\bin\zh-Hant\System.Spatial.resources.dll
-D:\Sandbox\CppDashboardGH\CppDashboard\obj\Debug\CppDashboard.csprojResolveAssemblyReference.cache
 D:\Sandbox\CppDashboardGH\CppDashboard\obj\Debug\CppDashboard.dll
 D:\Sandbox\CppDashboardGH\CppDashboard\obj\Debug\CppDashboard.pdb
 D:\Sandbox\CppDashboardGH\CppDashboard\bin\DataProvider\sql\SystemErrorSummary.sql
+D:\Sandbox\CppDashboardGH\CppDashboard\obj\Debug\CppDashboard.csprojResolveAssemblyReference.cache

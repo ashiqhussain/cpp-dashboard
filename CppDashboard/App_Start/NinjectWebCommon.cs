@@ -87,25 +87,26 @@ namespace CppDashboard.App_Start
             kernel.Bind<SystemOnlineOrOfflineStatus>().ToSelf();
             
             
-            kernel.Bind<DataCanLoadBase<ErrorSummary>, IErrorSummaryWindow>().To<ErrorSummaryWindow>().InRequestScope();
+            // System data tab loads everytime.
+            kernel.Bind<IErrorSummaryWindow, ILoadSystemData>().To<ErrorSummaryWindow>().InSingletonScope();
+            kernel.Bind<ISystemEventSummaryWindow, ILoadSystemData>().To<SystemEventSummaryWindow>().InSingletonScope();
 
-            kernel.Bind<DataCanLoadBase<Log>, ILoggingInfo, ICanReload>().To<LoggingDataCanFacade>().InSingletonScope();
 
-            kernel.Bind<DataCanLoadBase<PaymentEvent>, IMonitoringEvents, ICanReload>().To<PaymentEventsDataCanFacade>().InSingletonScope();
-
-            kernel.Bind<DataCanLoadBase<Payment>, IPaymentInfo, ICanReload>().To<PaymentsDataCanFacade>().InSingletonScope();
-
-            kernel.Bind<ICanLoad<OfflineConfig>, IOfflineConfigs, ICanReload>().To<OfflineDataFacade>().InSingletonScope();
+            // Volatile data that required to be refreshed regulaly.
+            kernel.Bind<ILoggingInfo, ICanReload, ILoadVolatileData>().To<LoggingDataCanFacade>().InSingletonScope();
+            kernel.Bind<IMonitoringEvents, ICanReload, ILoadVolatileData>().To<PaymentEventsDataCanFacade>().InSingletonScope();
+            kernel.Bind<IPaymentInfo, ICanReload, ILoadVolatileData>().To<PaymentsDataCanFacade>().InSingletonScope();
+            kernel.Bind<IOfflineConfigs, ICanReload, ILoadVolatileData>().To<OfflineDataFacade>().InSingletonScope();
 
             kernel.Bind<IInitialiser>()
                 .To<ShortTermDataInitialiser>()
                 .WhenInjectedInto<DashboardDataController>()
-                .InRequestScope();
+                .InSingletonScope();
 
             kernel.Bind<IInitialiser>()
                 .To<SystemDataInitialiser>()
                 .WhenInjectedInto<SystemDataController>()
-                .InRequestScope();
+                .InSingletonScope();
         }
     }
 
@@ -138,11 +139,11 @@ namespace CppDashboard.App_Start
 
         public void Dispose()
         {
-            IDisposable disposable = resolver as IDisposable;
-            if (disposable != null)
-                disposable.Dispose();
+            //IDisposable disposable = resolver as IDisposable;
+            //if (disposable != null)
+            //    disposable.Dispose();
 
-            resolver = null;
+            //resolver = null;
         }
     }
 
@@ -160,7 +161,7 @@ namespace CppDashboard.App_Start
 
         public IDependencyScope BeginScope()
         {
-            return new NinjectDependencyScope(kernel.BeginBlock());
+            return new NinjectDependencyScope(kernel);
         }
     }
 }

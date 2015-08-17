@@ -1,20 +1,20 @@
 using CppDashboard.DataProvider;
-using CppDashboard.Models;
+using WebGrease.Css.Extensions;
 
 namespace CppDashboard.Initialisers
 {
     public class SystemDataInitialiser : IInitialiser
     {
-        private readonly DataCanLoadBase<ErrorSummary> _errorSummary;
+        private readonly ILoadSystemData[] _systemData;
 
-        public SystemDataInitialiser(DataCanLoadBase<ErrorSummary> errorSummary)
+        public SystemDataInitialiser(ILoadSystemData[] systemData)
         {
-            _errorSummary = errorSummary;
+            _systemData = systemData;
         }
 
         public void Load()
         {
-            _errorSummary.Load();
+            _systemData.ForEach(l => l.Load());
         }
     }
 }

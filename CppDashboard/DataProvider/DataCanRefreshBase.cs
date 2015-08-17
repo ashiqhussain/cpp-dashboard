@@ -5,7 +5,7 @@ using Dapper;
 
 namespace CppDashboard.DataProvider
 {
-    public abstract class DataCanLoadBase<T> : ICanLoad<T>
+    public abstract class DataCanRefreshBase<T> : ICanRefresh<T>
     {
         public abstract void Load();
 
