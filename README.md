@@ -1,3 +1,3 @@
 # cpp-dashboard
 
-Simple dashboard!
+Simple dashboard! This is cool!s
